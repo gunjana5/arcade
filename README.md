@@ -6,14 +6,12 @@ Four board games in the browser - tic tac toe, connect four, checkers, chess - v
 
 Jul 2025 - Aug 2026. Not a games platform.
 
-Live: [https://play-in-my-arcade.vercel.app](https://play-in-my-arcade.vercel.app)
-
 ## layout
 
 ```
 arcade/
   README.md
-  run.sh                    # api + next together
+  run.sh                    # local api + next (dev only)
   render.yaml               # free Render api (ephemeral disk)
   backend/                  # FastAPI, rules, ai
     ai/minimax.py           # shared MinimaxEngine (hard/expert only)
@@ -29,41 +27,9 @@ arcade/
 
 ## quick start
 
-```bash
-./run.sh
-```
+Open the live site: [https://play-in-my-arcade.vercel.app](https://play-in-my-arcade.vercel.app)
 
-FastAPI on :8000, Next on :3000, tries to open the browser.
-
-### manual
-
-backend:
-
-```bash
-cd backend
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python main.py
-```
-
-frontend (new terminal):
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Open http://localhost:3000. If the API is not on `http://localhost:8000`, set `NEXT_PUBLIC_API_URL`.
-
-Optional Mongo for the leaderboard (otherwise sqlite next to `users.db`):
-
-```bash
-export MONGODB_URI="mongodb://localhost:27017"
-export MONGODB_DB="arcade"
-```
-
-Local CORS always allows `localhost:3000` / `127.0.0.1:3000`. Live site is `https://play-in-my-arcade.vercel.app` - that URL must be in `CORS_ORIGINS` on the API.
+Drag the coin into a cabinet (or tap coin, then tap a slot). First load after idle can take a bit - free API host wakes from sleep.
 
 ## stack
 
@@ -107,12 +73,8 @@ Client posts the whole board back each move - no server-side match sessions. Aut
 cd backend && .venv/bin/pytest -q
 ```
 
-Install first if needed: `.venv/bin/pip install -r requirements.txt`
-
 ## demo
 
 Live: [https://play-in-my-arcade.vercel.app](https://play-in-my-arcade.vercel.app)
-
-Local: `./run.sh` then http://localhost:3000
 
 Home grid: tictactoe, connect4, checkers, chess.
