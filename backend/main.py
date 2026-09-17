@@ -1,5 +1,4 @@
 # fastapi entrypoint - routes only, game rules live in games/
-# fastapi entrypoint - routes only, game rules live in games/
 # no online multiplayer, just vs ai or friend on same machine
 import json
 import os
@@ -36,14 +35,13 @@ from games import (
 from games.tictactoe import is_draw as ttt_is_draw
 from leaderboard import init_leaderboard, record_win, storage_mode, top_scores
 from win_check import assert_human_ai_win
-from win_check import assert_human_ai_win
 
 
 def _cors_origins() -> list[str]:
     # always allow local next; CORS_ORIGINS for vercel/etc after deploy
     defaults = ["http://localhost:3000", "http://127.0.0.1:3000"]
     extra = os.getenv("CORS_ORIGINS", "")
-    from_env = [o.strip() for o in extra.split(",") if o.strip()]
+    from_env = [o.strip().rstrip("/") for o in extra.split(",") if o.strip()]
     # preserve order, drop dupes
     return list(dict.fromkeys(defaults + from_env))
 
@@ -63,6 +61,12 @@ def on_startup():
     # auth sqlite always; leaderboard = mongo if URI set else sqlite (ephemeral on free render)
     init_auth()
     init_leaderboard()
+
+
+@app.get("/health")
+def health():
+    # cheap ping so the home page can wake a sleeping free Render box
+    return {"ok": True}
 
 
 def _bearer_token(authorization: Optional[str]) -> Optional[str]:

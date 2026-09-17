@@ -6,6 +6,8 @@ Four board games in the browser - tic tac toe, connect four, checkers, chess - v
 
 Jul 2025 - Aug 2026. Not a games platform.
 
+Live: [https://play-in-my-arcade.vercel.app](https://play-in-my-arcade.vercel.app)
+
 ## layout
 
 ```
@@ -61,7 +63,7 @@ export MONGODB_URI="mongodb://localhost:27017"
 export MONGODB_DB="arcade"
 ```
 
-Local CORS always allows `localhost:3000` / `127.0.0.1:3000`. After Vercel is back, put that URL in `CORS_ORIGINS` on the API.
+Local CORS always allows `localhost:3000` / `127.0.0.1:3000`. Live site is `https://play-in-my-arcade.vercel.app` - that URL must be in `CORS_ORIGINS` on the API.
 
 ## stack
 
@@ -109,8 +111,8 @@ Install first if needed: `.venv/bin/pip install -r requirements.txt`
 
 ## demo
 
+Live: [https://play-in-my-arcade.vercel.app](https://play-in-my-arcade.vercel.app)
+
 Local: `./run.sh` then http://localhost:3000
 
 Home grid: tictactoe, connect4, checkers, chess.
-
-Live URL after the Vercel project is connected again.

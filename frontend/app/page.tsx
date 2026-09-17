@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { ArcadeStickers } from "@/components/ArcadeStickers";
 import { ArcadeTip } from "@/components/ArcadeTip";
 import { ArcadeCoin, CoinProvider } from "@/components/CoinInsert";
@@ -14,7 +15,14 @@ const games = [
   { id: "chess", name: "chess", icon: "K", accent: "purple" as const },
 ];
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 export default function HomePage() {
+  useEffect(() => {
+    // wake free Render before they insert a coin (cold start is slow once)
+    fetch(`${API_BASE}/health`).catch(() => {});
+  }, []);
+
   return (
     // provider so the coin + every cabinet slot share armed state
     <CoinProvider>
