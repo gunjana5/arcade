@@ -1,0 +1,23 @@
+# free demo host - filesystem is ephemeral (no paid disk)
+# sqlite users + leaderboard live on the instance until redeploy/sleep wipe
+# MONGODB_URI left optional; this free deploy does not rely on Atlas
+# set CORS_ORIGINS to the vercel url
+services:
+  - type: web
+    name: cyber-arcade-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CORS_ORIGINS
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: cyber_arcade
+      - key: USERS_DB
+        value: /opt/render/project/src/users.db
+      - key: LEADERBOARD_DB
+        value: /opt/render/project/src/leaderboard.db

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- cute arcade ghost -->
+  <rect x="3" y="2" width="10" height="11" fill="#1a0840"/>
+  <rect x="4" y="3" width="8" height="9" fill="#ff9ae0"/>
+  <rect x="5" y="2" width="6" height="1" fill="#ff9ae0"/>
+  <rect x="4" y="12" width="2" height="2" fill="#ff9ae0"/>
+  <rect x="7" y="12" width="2" height="2" fill="#ff9ae0"/>
+  <rect x="10" y="12" width="2" height="2" fill="#ff9ae0"/>
+  <rect x="5" y="5" width="2" height="3" fill="#1a0840"/>
+  <rect x="9" y="5" width="2" height="3" fill="#1a0840"/>
+  <rect x="5" y="5" width="1" height="1" fill="#fff"/>
+  <rect x="9" y="5" width="1" height="1" fill="#fff"/>
+</svg>

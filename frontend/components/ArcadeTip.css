@@ -1,0 +1,90 @@
+/* neon field tip - pixel ? chip, cabinet panel pop */
+.arcade-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 0.4rem;
+}
+
+.arcade-tip-btn {
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 2px solid #ff00ff;
+  border-radius: 0.35rem;
+  background: #0a0a12;
+  color: #00ffff;
+  font-family: var(--font-press, "Press Start 2P", monospace);
+  font-size: 0.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 10px rgba(255, 0, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.arcade-tip-btn:hover,
+.arcade-tip-btn:focus-visible,
+.arcade-tip-btn.is-open {
+  color: #0a0a12;
+  background: #ff00ff;
+  border-color: #ff00ff;
+  box-shadow: 0 0 16px rgba(255, 0, 255, 0.75);
+  outline: none;
+}
+
+.arcade-tip-pop {
+  position: fixed;
+  z-index: 10050;
+  min-width: 11rem;
+  max-width: min(16rem, calc(100vw - 1.25rem));
+  padding: 0.7rem 0.85rem;
+  border: 3px solid #ff00ff;
+  border-radius: 0.75rem;
+  background: #08080f;
+  color: #e8e8ff;
+  font-family: var(--font-vt, "VT323", monospace);
+  font-size: 1.15rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: normal;
+  box-shadow:
+    0 0 22px rgba(255, 0, 255, 0.4),
+    0 0 14px rgba(0, 255, 255, 0.15),
+    0 12px 28px rgba(0, 0, 0, 0.65);
+  animation: arcadeTipIn 0.16s ease-out;
+}
+
+.arcade-tip-pop.place-above {
+  animation-name: arcadeTipInUp;
+}
+
+@keyframes arcadeTipIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arcadeTipInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

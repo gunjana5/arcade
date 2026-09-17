@@ -1,0 +1,17 @@
+# deps / build junk - never upload these
+node_modules/
+frontend/node_modules/
+backend/.venv/
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+frontend/.next/
+**/dist/
+*.tsbuildinfo
+*.db
+.DS_Store
+**/.DS_Store
+.env
+.env.*
+NOTES.md
+docs/SYSTEMS.md
