@@ -211,11 +211,12 @@ export function Leaderboard() {
 
 type RecordWinPromptProps = {
   game: string;
+  state: object;
   visible: boolean;
   onDone: () => void;
 };
 
-export function RecordWinPrompt({ game, visible, onDone }: RecordWinPromptProps) {
+export function RecordWinPrompt({ game, state, visible, onDone }: RecordWinPromptProps) {
   // pops up after an ai win - save to leaderboard or skip
   const [username, setUsername] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
@@ -238,10 +239,10 @@ export function RecordWinPrompt({ game, visible, onDone }: RecordWinPromptProps)
 
   if (!visible) return null;
 
-  const saveWin = async (name: string) => {
+  const saveWin = async () => {
     setStatus("saving");
     try {
-      await recordLeaderboardWin(game, name);
+      await recordLeaderboardWin(game, state);
       setStatus("saved");
       setMessage("SAVED TO LEADERBOARD");
       setTimeout(onDone, 1200);
@@ -257,7 +258,7 @@ export function RecordWinPrompt({ game, visible, onDone }: RecordWinPromptProps)
     try {
       const session = await register(regUser.trim(), regPass);
       setUsername(session.username);
-      await recordLeaderboardWin(game, session.username);
+      await recordLeaderboardWin(game, state, session.username);
       setStatus("saved");
       setMessage("ACCOUNT CREATED · WIN SAVED");
       setTimeout(onDone, 1200);
@@ -278,7 +279,7 @@ export function RecordWinPrompt({ game, visible, onDone }: RecordWinPromptProps)
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => saveWin(username)}
+              onClick={() => saveWin()}
               disabled={status === "saving"}
               className="btn-neon btn-neon-cyan flex-1 disabled:opacity-50"
             >
