@@ -1,5 +1,5 @@
 # re-export game helpers for main.py - add new games here when wiring routes
-from .tictactoe import get_state, apply_move, get_winner, get_ai_move, DIFFICULTY_DEPTHS
+from .tictactoe import get_state, apply_move, get_winner, get_ai_move
 from .checkers import (
     checkers_get_state,
     checkers_get_moves,
@@ -22,7 +22,6 @@ __all__ = [
     "apply_move",
     "get_winner",
     "get_ai_move",
-    "DIFFICULTY_DEPTHS",
     "checkers_get_state",
     "checkers_get_moves",
     "checkers_apply_move",

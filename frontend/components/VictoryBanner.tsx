@@ -95,7 +95,7 @@ export function VictoryBanner({
         {showPlayAgain && onPlayAgain && (
           <motion.button
             type="button"
-            className="btn-gem-play mt-6"
+            className="btn-play mt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             onClick={onPlayAgain}

@@ -1,4 +1,4 @@
-/* cyber arcade look - colours, crt, neon cards, buttons */
+/* arcade look - colours, neon cards, buttons */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -44,14 +44,12 @@
   --font-press: var(--font-press), cursive;
   --font-bubble: var(--font-bubble), cursive;
   --font-vt: var(--font-vt), monospace;
-  --font-orbitron: var(--font-press), cursive;
-  --font-inter: var(--font-vt), monospace;
 
   --scanline-color: rgba(255, 255, 255, 0.035);
-  --arcade-pink: #ff4dc8;
-  --arcade-pink-deep: #c4007a;
-  --arcade-lavender: #b388ff;
-  --arcade-ice: #b8f0ff;
+  --y2k-pink: #ff4dc8;
+  --y2k-pink-deep: #c4007a;
+  --y2k-lavender: #b388ff;
+  --y2k-ice: #b8f0ff;
 }
 
 @layer base {
@@ -63,198 +61,84 @@
     color: var(--text-primary);
   }
 
-  /* make leftover inter/orbitron classes still feel pixel */
-  .font-inter {
-    font-family: var(--font-vt) !important;
-  }
-  .font-orbitron {
-    font-family: var(--font-press) !important;
-  }
   .font-bubble {
     font-family: var(--font-bubble) !important;
   }
 }
 
-/* crt overlay + page bg + home title */
-.crt-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      var(--scanline-color) 2px,
-      var(--scanline-color) 3px
-    ),
-    radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.55) 100%);
-  mix-blend-mode: screen;
-}
-
-.arcade-page-bg {
-  background-color: #08081a;
+/* page bg + home title */
+  background-color: #120018;
   background-image:
-    linear-gradient(rgba(0, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 32px 32px;
+    radial-gradient(ellipse at 15% 0%, rgba(255, 0, 200, 0.28), transparent 42%),
+    radial-gradient(ellipse at 85% 10%, rgba(180, 100, 255, 0.22), transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 255, 255, 0.12), transparent 45%),
+    linear-gradient(rgba(255, 0, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: auto, auto, auto, 28px 28px, 28px 28px;
   background-attachment: fixed;
 }
 
-/* home hero = one dark crt screen, title is the focus */
-.arcade-hero-stage {
+/* home hero stage - pink cabinet + grain */
+.arcade-y2k-stage {
   position: relative;
   width: 100%;
-  max-width: 56rem;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 2.75rem;
-  border-radius: 0.35rem;
-  background: #08081a;
-  border: 4px solid #111;
+  max-width: 52rem;
+  margin: 0 auto 2.5rem;
+  padding: 1.75rem 1.25rem 2rem;
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(180deg, #3a1050 0%, #1a0828 45%, #2a1038 100%);
+  border: 5px solid #ff00aa;
   box-shadow:
-    0 0 0 3px #00ffff,
-    0 0 28px rgba(0, 255, 255, 0.25),
-    inset 0 0 80px rgba(0, 0, 0, 0.45);
+    0 0 0 4px #4a1030,
+    0 0 40px rgba(255, 0, 170, 0.45),
+    inset 0 0 60px rgba(255, 100, 200, 0.08);
   overflow: hidden;
-  text-align: center;
 }
-.arcade-hero-stage::before {
-  content: "";
+.arcade-y2k-stage::before {
+  /* soft binary wash */
+  content: "01001101 01000001 01011001 01000010 01000101";
   position: absolute;
   inset: 0;
+  font-family: var(--font-vt);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: rgba(255, 120, 220, 0.12);
+  word-break: break-all;
+  padding: 0.5rem;
   pointer-events: none;
   z-index: 0;
-  background:
-    linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.9;
 }
-.arcade-hero-stage::after {
+.arcade-y2k-stage::after {
+  /* grain */
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 3px
-  );
-  opacity: 0.5;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
-.arcade-hero-stage > * {
+.arcade-y2k-stage > * {
   position: relative;
   z-index: 2;
 }
 
-.arcade-hud-line {
-  font-family: var(--font-press);
-  font-size: clamp(0.45rem, 1.5vw, 0.65rem);
-  letter-spacing: 0.12em;
-  line-height: 1.4;
+.arcade-leopard-frame {
+  border: 10px solid transparent;
+  border-image: repeating-linear-gradient(
+      45deg,
+      #ff4dc8 0 8px,
+      #2a0a18 8px 14px,
+      #ff99dd 14px 18px,
+      #5a1838 18px 26px
+    )
+    10;
+  border-radius: 1.75rem;
 }
 
-/* welcome-style: white fill + thick pink pixel shadow */
-.arcade-title {
-  font-family: var(--font-press);
-  font-size: clamp(2.4rem, 12vw, 5.5rem);
-  color: #ffffff;
-  letter-spacing: 0.08em;
-  text-align: center;
-  line-height: 1.05;
-  text-shadow:
-    5px 5px 0 #ff00aa,
-    6px 6px 0 #ff00aa,
-    0 0 18px rgba(255, 0, 170, 0.45);
-  animation: flicker 4s linear infinite;
-}
-
-.arcade-title-sub {
-  font-family: var(--font-press);
-  font-size: clamp(0.7rem, 2.5vw, 1.1rem);
-  color: #ff66cc;
-  letter-spacing: 0.28em;
-  text-align: center;
-  text-transform: uppercase;
-  text-shadow: 2px 2px 0 #1a0840;
-}
-
-/* home coin tray + cabinet slots */
-.arcade-coin {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0.75rem;
-  background: transparent;
-  border: 3px dashed rgba(255, 204, 0, 0.45);
-  border-radius: 0.75rem;
-  cursor: grab;
-  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
-}
-.arcade-coin:active {
-  cursor: grabbing;
-}
-.arcade-coin.is-armed {
-  /* touch path: coin picked up, waiting for a slot tap */
-  border-color: #ffcc00;
-  box-shadow: 0 0 22px rgba(255, 204, 0, 0.55);
-  transform: scale(1.06);
-}
-.arcade-coin-label {
-  font-family: var(--font-press);
-  font-size: 0.45rem;
-  letter-spacing: 0.12em;
-  color: #ffcc00;
-  text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
-}
-
-.arcade-coin-slot {
-  margin-top: 0.85rem;
-  width: 100%;
-  max-width: 9rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 0.5rem 0.55rem;
-  background: #0a0a12;
-  border: 3px solid rgba(0, 255, 255, 0.45);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
-}
-.arcade-coin-slot-well {
-  width: 3.25rem;
-  height: 0.85rem;
-  border-radius: 9999px;
-  background: #050508;
-  border: 2px solid #333;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85);
-}
-.arcade-coin-slot-text {
-  font-family: var(--font-press);
-  font-size: 0.4rem;
-  letter-spacing: 0.14em;
-  color: #00ffff;
-}
-.arcade-coin-slot.is-over,
-.arcade-coin-slot.is-armed-target {
-  border-color: #ffcc00;
-  box-shadow: 0 0 16px rgba(255, 204, 0, 0.4);
-}
-.arcade-coin-slot.is-flash {
-  /* brief green pulse right after a successful insert */
-  transform: scale(1.05);
-  border-color: #39ff14;
-  box-shadow: 0 0 22px rgba(57, 255, 20, 0.55);
-}
-
-.btn-gem-play {
+.btn-play {
   font-family: var(--font-bubble);
   font-size: 1.35rem;
   font-weight: 700;
@@ -273,22 +157,22 @@
     inset 0 -4px 0 rgba(0, 0, 0, 0.22);
   transition: transform 150ms ease, filter 150ms ease;
 }
-.btn-gem-play:hover {
+.btn-play:hover {
   filter: brightness(1.08);
   transform: translateY(-2px);
 }
-.btn-gem-play:active {
+.btn-play:active {
   transform: translateY(1px);
 }
 
-.arcade-panel {
+.y2k-window {
   border: 3px solid #6a2cff;
   border-radius: 0.35rem;
   background: #ffd6f0;
   box-shadow: 0 0 24px rgba(255, 0, 200, 0.35), 8px 10px 0 rgba(0, 255, 255, 0.25);
   overflow: hidden;
 }
-.arcade-panel-bar {
+.y2k-window-titlebar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -296,18 +180,18 @@
   padding: 0.35rem 0.5rem;
   border-bottom: 3px solid #6a2cff;
 }
-.arcade-panel-bar span {
+.y2k-window-titlebar span {
   font-family: var(--font-press);
   font-size: 0.45rem;
   color: #2a1050;
   letter-spacing: 0.06em;
   flex: 1;
 }
-.arcade-panel-btns {
+.y2k-window-btns {
   display: flex;
   gap: 0.25rem;
 }
-.arcade-panel-btns i {
+.y2k-window-btns i {
   width: 0.7rem;
   height: 0.7rem;
   display: block;
@@ -315,7 +199,7 @@
   background: #ffe566;
   font-style: normal;
 }
-.arcade-panel-body {
+.y2k-window-body {
   padding: 1rem 1rem 1.1rem;
   color: #3a1060;
   font-family: var(--font-vt);
@@ -337,29 +221,8 @@
   user-select: none;
 }
 
-/* home title - press start energy */
-.arcade-press-start {
-  font-family: var(--font-press);
-  font-size: clamp(0.85rem, 3vw, 1.35rem);
-  letter-spacing: 0.14em;
-  text-align: center;
-  line-height: 1.2;
-}
-.arcade-press-start .ps-cyan {
-  color: #ffffff;
-  text-shadow:
-    3px 3px 0 #00c8c8,
-    4px 4px 0 #00c8c8;
-}
-.arcade-press-start .ps-pink {
-  color: #ffffff;
-  text-shadow:
-    3px 3px 0 #ff00aa,
-    4px 4px 0 #ff00aa;
-}
-
 /* home game cards - neon borders per game */
-.game-card-retro {
+.game-card {
   position: relative;
   border-radius: 1.35rem;
   padding: 2.5rem 1.25rem;
@@ -382,33 +245,33 @@
     inset 0 -4px 0 rgba(0, 0, 0, 0.45);
 }
 
-.game-card-retro:hover {
+.game-card:hover {
   transform: translateY(-12px) scale(1.06) rotate(-1deg);
   filter: brightness(1.15);
 }
 
-.game-card-retro.tic {
+.game-card.tic {
   border-color: #aa00ff;
   color: #aa00ff;
   box-shadow: 0 0 15px #aa00ff, 0 0 30px #bb33ff;
 }
-.game-card-retro.connect4 {
+.game-card.connect4 {
   border-color: #00ffff;
   color: #00ffff;
   box-shadow: 0 0 15px #00ffff, 0 0 30px #33ffff;
 }
-.game-card-retro.checkers {
+.game-card.checkers {
   border-color: #ff00ff;
   color: #ff00ff;
   box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff66ff;
 }
-.game-card-retro.chess {
+.game-card.chess {
   border-color: #ff6600;
   color: #ff6600;
   box-shadow: 0 0 15px #ff6600, 0 0 30px #ff9933;
 }
 
-.game-card-retro h2 {
+.game-card h2 {
   font-family: var(--font-press);
   font-size: 0.85rem;
   line-height: 1.5;
@@ -416,13 +279,13 @@
   letter-spacing: 0.05em;
 }
 
-.game-card-retro p {
+.game-card p {
   font-size: 1.35rem;
   margin: 0;
   opacity: 0.9;
 }
 
-.game-card-retro img {
+.game-card img {
   image-rendering: pixelated;
   width: 72px;
   height: 72px;
@@ -542,24 +405,6 @@
   box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55);
 }
 
-.hero-scanlines {
-  position: relative;
-}
-.hero-scanlines::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    var(--scanline-color) 2px,
-    var(--scanline-color) 3px
-  );
-  border-radius: inherit;
-}
-
 .game-play-surface {
   border-radius: 1rem;
   border: 3px solid rgba(0, 255, 255, 0.5);
@@ -571,27 +416,8 @@
   position: relative;
   z-index: 1;
 }
-.game-play-surface::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(0, 0, 0, 0.14) 3px,
-    rgba(0, 0, 0, 0.14) 4px
-  );
-  opacity: 0.5;
-}
-.game-play-surface > * {
-  position: relative;
-  z-index: 1;
-}
 
-/* cabinet shell around the crt screen */
+/* cabinet shell around the board */
 .arcade-cabinet {
   position: relative;
   padding: 1rem;
@@ -625,7 +451,7 @@
   box-shadow: 0 0 18px rgba(0, 255, 255, 0.3);
 }
 
-.panel-retro {
+.side-panel {
   border: 3px solid rgba(255, 0, 255, 0.5);
   background: #08080f;
   box-shadow:
@@ -634,7 +460,7 @@
     inset 0 0 32px rgba(0, 255, 255, 0.04);
   border-radius: 1.15rem;
 }
-.panel-retro--controls {
+.side-panel--controls {
   border-color: rgba(255, 0, 170, 0.55);
   box-shadow:
     0 0 22px rgba(255, 0, 170, 0.28),
@@ -652,7 +478,6 @@
 }
 
 @keyframes flicker {
-  /* crt title glitch - mostly on, dips briefly */
   0%,
   19%,
   21%,
@@ -670,7 +495,6 @@
   }
 }
 
-/* ai thinking dots - staggered delays below */
 @keyframes think-dot-seq {
   0%,
   100% {
@@ -700,7 +524,6 @@
 }
 
 @keyframes connect4-drop {
-  /* piece falls from above the cell */
   from {
     transform: translateY(-100%);
   }

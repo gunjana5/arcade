@@ -24,7 +24,7 @@ export default function GamePage() {
   if (!Page) {
     // typo'd url or old link
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-bg-void font-inter px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-bg-void font-vt px-4">
         <p className="text-neon-pink lowercase">no game at this url</p>
         <Link href="/" className="btn-neon btn-neon-cyan lowercase">
           home

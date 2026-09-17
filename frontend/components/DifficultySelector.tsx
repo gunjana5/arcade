@@ -15,7 +15,7 @@ export function DifficultySelector({
     <div className="space-y-2">
       <p className="font-vt text-lg tracking-widest text-muted inline-flex items-center leading-none">
         DIFFICULTY
-        <ArcadeTip text="easy = random legal move. medium+ = deeper search (stronger, slower). chess expert is only depth 4" />
+        <ArcadeTip text="easy = random. medium = looks one move (win/block or greedy). hard/expert = minimax, expert deeper. chess expert is depth 5 so it stays playable, just slow" />
       </p>
       <div className="flex flex-wrap gap-2">
         {OPTIONS.map((d) => {
@@ -40,7 +40,7 @@ export function DifficultySelector({
       )}
       {value === "expert" && (
         <p className="font-vt text-lg text-muted">
-          EXPERT = DEEPEST SEARCH HERE - CHESS CAPS AT DEPTH 4 (SLOW ON PURPOSE, NOT STOCKFISH)
+          EXPERT = DEEPEST SEARCH HERE - CHESS CAPS AT DEPTH 5 (SLOW ON PURPOSE, NOT STOCKFISH)
         </p>
       )}
     </div>

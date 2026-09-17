@@ -382,6 +382,7 @@ export function ChessPage() {
           </AnimatePresence>
         </div>
         {error && <p className="mt-2 font-vt text-lg text-neon-pink">{error}</p>}
+        {error && <p className="mt-2 font-vt text-lg text-neon-pink">{error}</p>}
         {showConfetti && <Confetti onComplete={() => setShowConfetti(false)} />}
         <RecordWinPrompt
           game="chess"

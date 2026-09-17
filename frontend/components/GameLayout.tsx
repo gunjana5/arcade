@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArcadeStickers } from "@/components/ArcadeStickers";
 import { ArcadeTip } from "@/components/ArcadeTip";
-import { CrtOverlay } from "@/components/CrtOverlay";
 
 export function GameLayout({
   title,
@@ -22,14 +21,9 @@ export function GameLayout({
   const [showHelp, setShowHelp] = useState(false);
   return (
     <div className="min-h-screen arcade-page-bg overflow-x-hidden">
-      <CrtOverlay />
       <div className="relative z-10 w-full max-w-[min(1440px,96vw)] mx-auto px-4 sm:px-8 lg:px-12 py-6 md:py-10">
         {/* home | title | how? - title stays roughly centred */}
-        <motion.header
-          className="mb-8 md:mb-10"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <header className="mb-8 md:mb-10">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <Link href="/" className="btn-neon btn-neon-purple shrink-0">
               {"<< HOME"}
@@ -54,7 +48,7 @@ export function GameLayout({
               <span className="w-10 md:w-12" aria-hidden />
             </div>
           </div>
-        </motion.header>
+        </header>
 
         {/* backdrop click closes - stopPropagation on the panel itself */}
         <AnimatePresence>
@@ -75,12 +69,7 @@ export function GameLayout({
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="arcade-panel-bar">
-                  <span>HOW IT WORKS</span>
-                  <div className="arcade-panel-btns" aria-hidden>
-                    <i />
-                    <i />
-                    <i />
-                  </div>
+                  <span>HOW?</span>
                 </div>
                 <div className="arcade-panel-body !bg-[#0e0818] !text-[#e8e8ff]">
                   <div className="flex justify-end mb-2">
@@ -114,7 +103,7 @@ export function GameLayout({
             </div>
           </div>
           <div className="xl:w-[22rem] xl:shrink-0 w-full max-w-md mx-auto xl:mx-0">
-            <div className="panel-retro panel-retro--controls p-4 md:p-5 relative">
+            <div className="side-panel side-panel--controls p-4 md:p-5 relative">
               <Image
                 src="/stickers/joystick.svg"
                 alt=""

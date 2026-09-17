@@ -1,5 +1,7 @@
 "use client";
 
+// Leaderboard.tsx - high-score board + login bar
+// free-text username spoofing removed when signed in
 import { useCallback, useEffect, useState } from "react";
 import { ArcadeTip } from "@/components/ArcadeTip";
 import { fetchLeaderboard, recordLeaderboardWin, type LeaderboardEntry } from "@/lib/api";
@@ -21,7 +23,6 @@ function AuthBar({
   onAuth: (name: string) => void;
   onLogout: () => void;
 }) {
-  // either shows "signed in as X" or the login/register form
   const [mode, setMode] = useState<"login" | "register">("login");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
@@ -32,7 +33,7 @@ function AuthBar({
     return (
       <div className="flex flex-wrap items-center gap-3 border-2 border-neon-cyan/50 bg-bg-void px-4 py-3 mb-6">
         <span className="font-vt text-xl text-fg">
-          PLAYER: <span className="text-neon-cyan font-press text-xs">{username}</span>
+          signed in: <span className="text-neon-cyan font-press text-xs">{username}</span>
         </span>
         <button type="button" onClick={onLogout} className="btn-neon btn-neon-pink ml-auto text-lg">
           LOG OUT
@@ -42,7 +43,6 @@ function AuthBar({
   }
 
   const submit = async () => {
-    // login vs register share the same form fields
     setBusy(true);
     setError(null);
     try {
@@ -61,7 +61,7 @@ function AuthBar({
     <div className="border-2 border-neon-purple/50 bg-bg-void px-4 py-4 mb-6 space-y-3">
       <div className="flex items-center gap-3">
         <p className="font-press text-[0.65rem] text-neon-purple tracking-widest inline-flex items-center" style={{ textShadow: "var(--glow-purple)" }}>
-          PLAYER LOGIN
+          LOGIN
           <ArcadeTip text="register or login so leaderboard wins use your name - guest can still play without it" />
         </p>
         <div className="ml-auto flex gap-2">
@@ -120,7 +120,7 @@ export function Leaderboard() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [storage, setStorage] = useState<string>(""); // memory | sqlite | mongodb
   const [error, setError] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null); // null = logged out
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     // restore session if token still in localStorage
@@ -211,13 +211,11 @@ export function Leaderboard() {
 
 type RecordWinPromptProps = {
   game: string;
-  // final board from the game page - required by /api/leaderboard/win
-  state: object | null;
   visible: boolean;
   onDone: () => void;
 };
 
-export function RecordWinPrompt({ game, state, visible, onDone }: RecordWinPromptProps) {
+export function RecordWinPrompt({ game, visible, onDone }: RecordWinPromptProps) {
   // pops up after an ai win - save to leaderboard or skip
   const [username, setUsername] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
@@ -241,15 +239,9 @@ export function RecordWinPrompt({ game, state, visible, onDone }: RecordWinPromp
   if (!visible) return null;
 
   const saveWin = async (name: string) => {
-    // already logged in - just hit the win endpoint
-    if (!state) {
-      setStatus("error");
-      setMessage("missing game state");
-      return;
-    }
     setStatus("saving");
     try {
-      await recordLeaderboardWin(game, state, name);
+      await recordLeaderboardWin(game, name);
       setStatus("saved");
       setMessage("SAVED TO LEADERBOARD");
       setTimeout(onDone, 1200);
@@ -260,18 +252,12 @@ export function RecordWinPrompt({ game, state, visible, onDone }: RecordWinPromp
   };
 
   const createAndSave = async () => {
-    // guest path: register then immediately record the win
-    if (!state) {
-      setStatus("error");
-      setMessage("missing game state");
-      return;
-    }
     setStatus("saving");
     setMessage("");
     try {
       const session = await register(regUser.trim(), regPass);
       setUsername(session.username);
-      await recordLeaderboardWin(game, state, session.username);
+      await recordLeaderboardWin(game, session.username);
       setStatus("saved");
       setMessage("ACCOUNT CREATED · WIN SAVED");
       setTimeout(onDone, 1200);

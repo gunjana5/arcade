@@ -296,7 +296,7 @@ def _is_terminal(board: List[List[str]], white_turn: bool, rights: dict[str, boo
 
 
 # keep these low - chess branching is nasty in pure python
-DEPTHS = {"easy": 1, "medium": 2, "hard": 3, "expert": 4}
+DEPTHS = {"hard": 3, "expert": 5}
 
 
 def _rights_from_state(state: dict) -> dict[str, bool]:
@@ -384,11 +384,12 @@ def chess_apply_move(state: dict, r0: int, c0: int, r1: int, c1: int) -> dict:
 def chess_ai_move(state: dict, difficulty: str) -> Tuple[int, int, int, int] | None:
     board, white_turn = state["board"], state["whiteTurn"]
     rights = _rights_from_state(state)
-    # easy = random legal so it isn't still "medium-lite"
     if difficulty == "easy":
         moves = _legal_moves(board, white_turn, rights)
         return random.choice(moves) if moves else None
-    depth = DEPTHS.get(difficulty, 2)
+    if difficulty == "medium":
+        return _greedy_move(board, white_turn, rights)
+    depth = DEPTHS.get(difficulty, DEPTHS["hard"])
 
     def legal_tuple(s: Tuple[List[List[str]], bool, dict[str, bool]]) -> List[Tuple[int, int, int, int]]:
         return _legal_moves(s[0], s[1], s[2])
@@ -416,6 +417,23 @@ def chess_ai_move(state: dict, difficulty: str) -> Tuple[int, int, int, int] | N
     )
     tup = (board, white_turn, rights)
     return engine.best_action(tup)
+
+
+def _greedy_move(
+    board: List[List[str]], white_turn: bool, rights: dict[str, bool]
+) -> Tuple[int, int, int, int] | None:
+    # one ply of the existing eval. white max, black min. random among ties
+    moves = _legal_moves(board, white_turn, rights)
+    if not moves:
+        return None
+    scored = []
+    for m in moves:
+        r0, c0, r1, c1 = m
+        nb = _apply_move(board, r0, c0, r1, c1, white_turn)
+        scored.append((_evaluate(nb), m))
+    best = max(s[0] for s in scored) if white_turn else min(s[0] for s in scored)
+    opts = [m for s, m in scored if s == best]
+    return random.choice(opts)
 
 
 def chess_hint_move(state: dict, difficulty: str) -> Tuple[int, int, int, int] | None:

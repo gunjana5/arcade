@@ -81,7 +81,7 @@ def _try_mongo(uri: str) -> bool:
 
         _client = MongoClient(uri, serverSelectionTimeoutMS=2000)
         _client.admin.command("ping")
-        db = _client[os.getenv("MONGODB_DB", "cyber_arcade")]
+        db = _client[os.getenv("MONGODB_DB", "arcade")]
         _collection = db["leaderboard"]
         _collection.create_index([("game", 1), ("wins", -1)])
         _collection.create_index([("username", 1), ("game", 1)], unique=True)

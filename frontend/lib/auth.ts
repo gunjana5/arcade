@@ -1,5 +1,5 @@
 // login / register helpers. token lives in localStorage
-const TOKEN_KEY = "cyber_arcade_token";
+const TOKEN_KEY = "arcade_token";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export type AuthSession = { token: string; username: string };
@@ -11,12 +11,10 @@ export function getToken(): string | null {
 }
 
 export function setToken(token: string): void {
-  // session stays until logout or 401 from /me
   localStorage.setItem(TOKEN_KEY, token);
 }
 
 export function clearToken(): void {
-  // logout + bad /me both land here
   localStorage.removeItem(TOKEN_KEY);
 }
 

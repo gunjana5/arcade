@@ -1,4 +1,5 @@
 # fastapi entrypoint - routes only, game rules live in games/
+# fastapi entrypoint - routes only, game rules live in games/
 # no online multiplayer, just vs ai or friend on same machine
 import json
 import os
@@ -35,6 +36,7 @@ from games import (
 from games.tictactoe import is_draw as ttt_is_draw
 from leaderboard import init_leaderboard, record_win, storage_mode, top_scores
 from win_check import assert_human_ai_win
+from win_check import assert_human_ai_win
 
 
 def _cors_origins() -> list[str]:
@@ -46,7 +48,7 @@ def _cors_origins() -> list[str]:
     return list(dict.fromkeys(defaults + from_env))
 
 
-app = FastAPI(title="cyber arcade api")
+app = FastAPI(title="arcade api")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins(),
@@ -174,7 +176,7 @@ def tictactoe_move(body: TTTMoveBody):
 
 @app.post("/api/tictactoe/ai")
 def tictactoe_ai(body: TTTAiBody):
-    # difficulty string -> depth inside get_ai_move
+    # difficulty string -> picker inside get_ai_move
     # always return draw like /move so the ui can stop on a full board
     result = ttt_ai_move(body.state, body.difficulty)
     if result is None:

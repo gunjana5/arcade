@@ -220,6 +220,7 @@ export function Connect4Page() {
     state.isDraw || state.winner === "Draw" ? "draw" : state.winner === "R" ? "win" : "lose";
 
   // which cells to pulse green after a win
+  // which cells to pulse green after a win
   const winCells = new Set<string>();
   if (state.gameOver && state.winner && state.winner !== "Draw" && !state.isDraw) {
     const w = state.winner === "R" || state.winner === "Y" ? state.winner : null;

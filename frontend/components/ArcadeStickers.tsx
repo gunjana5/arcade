@@ -4,7 +4,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 
-type Layout = "home" | "cabinet" | "welcome";
+type Layout = "home" | "cabinet";
 
 type Sticker = {
   src: string;
@@ -13,7 +13,7 @@ type Sticker = {
   style: CSSProperties;
 };
 
-// home: four corners on the welcome crt
+// home: four corners on the title cabinet
 const HOME: Sticker[] = [
   { src: "/stickers/butterfly.svg", w: 56, h: 44, style: { top: "14px", left: "12px" } },
   { src: "/stickers/sparkle.svg", w: 48, h: 48, style: { top: "16px", right: "16px" } },
@@ -28,15 +28,9 @@ const CABINET: Sticker[] = [
   { src: "/stickers/shooting-star.svg", w: 52, h: 26, style: { bottom: "10px", right: "10px" } },
 ];
 
-const WELCOME: Sticker[] = [
-  { src: "/stickers/shooting-star.svg", w: 56, h: 28, style: { top: "-10px", right: "10%" } },
-  { src: "/stickers/butterfly.svg", w: 40, h: 32, style: { bottom: "-12px", left: "-6px" } },
-];
-
 const MAP: Record<Layout, Sticker[]> = {
   home: HOME,
   cabinet: CABINET,
-  welcome: WELCOME,
 };
 
 export function ArcadeStickers({ layout }: { layout: Layout }) {

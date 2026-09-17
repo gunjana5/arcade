@@ -143,10 +143,11 @@ def _eval(board: List[List[str]], black_turn: bool) -> float:
     return v
 
 
-DEPTHS = {"easy": 2, "medium": 4, "hard": 6, "expert": 8}
+DEPTHS = {"hard": 3, "expert": 5}
 
 
 def checkers_get_state(board: List[List[str]] | None = None, black_turn: bool = True) -> dict:
+    # no legal moves = you lose (opponent wins)
     # no legal moves = you lose (opponent wins)
     if board is None:
         board = _initial_board()
@@ -175,18 +176,36 @@ def checkers_move_notation(move: List[Tuple[int, int]]) -> str:
 
 
 def checkers_hint_move(state: dict, difficulty: str) -> List[Tuple[int, int]] | None:
-    # hint is just "what would the ai do from here"
+    # same picker as the ai for this difficulty
     return checkers_ai_move(state, difficulty)
 
 
+def _random_legal(board: List[List[str]], black_turn: bool) -> List[Tuple[int, int]] | None:
+    moves = _get_moves(board, black_turn)
+    return random.choice(moves) if moves else None
+
+
+def _greedy_move(board: List[List[str]], black_turn: bool) -> List[Tuple[int, int]] | None:
+    # one ply of the existing eval. black max, red min. random among ties
+    moves = _get_moves(board, black_turn)
+    if not moves:
+        return None
+    scored = []
+    for m in moves:
+        nb = _apply_move(board, m, black_turn)
+        scored.append((_eval(nb, not black_turn), m))
+    best = max(s[0] for s in scored) if black_turn else min(s[0] for s in scored)
+    opts = [m for s, m in scored if s == best]
+    return random.choice(opts)
+
+
 def checkers_ai_move(state: dict, difficulty: str) -> List[Tuple[int, int]] | None:
-    # state for the engine is just (board, black_turn)
     board, black_turn = state["board"], state["blackTurn"]
-    # easy = random legal (still respects forced jumps via _get_moves)
     if difficulty == "easy":
-        moves = _get_moves(board, black_turn)
-        return random.choice(moves) if moves else None
-    depth = DEPTHS.get(difficulty, 4)
+        return _random_legal(board, black_turn)
+    if difficulty == "medium":
+        return _greedy_move(board, black_turn)
+    depth = DEPTHS.get(difficulty, DEPTHS["hard"])
     engine = MinimaxEngine(
         max_depth=depth,
         get_actions=lambda s: _get_moves(s[0], s[1]),

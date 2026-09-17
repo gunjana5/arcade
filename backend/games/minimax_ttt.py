@@ -1,5 +1,6 @@
 # adapters so ttt can use MinimaxEngine
-# hard/expert depth 9 = whole tree, ai shouldn't lose
+# adapters so ttt can use MinimaxEngine
+# expert depth 9 = whole tree, ai shouldn't lose. hard is shallower (4)
 from ai.minimax import MinimaxEngine
 
 EMPTY, X, O = " ", "X", "O"

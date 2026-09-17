@@ -7,9 +7,8 @@ EMPTY = " "
 X = "X"
 O = "O"
 
-# depth for minimax - 9 = whole tree from empty board (solved)
-# easy = random legal; medium+ use depth caps below
-DIFFICULTY_DEPTHS = {"easy": 3, "medium": 6, "hard": 9, "expert": 9}
+# hard/expert only - easy/medium never hit the engine
+DEPTHS = {"hard": 4, "expert": 9}
 
 
 def get_state(board: list[list[str]] | None = None) -> dict:
@@ -54,16 +53,55 @@ def apply_move(state: dict, row: int, col: int) -> dict | None:
     return {"board": board, "currentPlayer": next_player}
 
 
+def _empties(board: list[list[str]]) -> list[tuple[int, int]]:
+    return [(r, c) for r in range(3) for c in range(3) if board[r][c] == EMPTY]
+
+
+def _random_legal(board: list[list[str]]) -> tuple[int, int] | None:
+    opts = _empties(board)
+    return random.choice(opts) if opts else None
+
+
+def _medium_move(board: list[list[str]], me: str) -> tuple[int, int] | None:
+    # one look: win, else block, else centre then corner then side
+    opp = O if me == X else X
+    empties = _empties(board)
+    wins, blocks = [], []
+    for r, c in empties:
+        b = [list(row) for row in board]
+        b[r][c] = me
+        if get_winner(b) == me:
+            wins.append((r, c))
+        b2 = [list(row) for row in board]
+        b2[r][c] = opp
+        if get_winner(b2) == opp:
+            blocks.append((r, c))
+    if wins:
+        return random.choice(wins)
+    if blocks:
+        return random.choice(blocks)
+    ranked = (
+        [(1, 1)],
+        [(0, 0), (0, 2), (2, 0), (2, 2)],
+        [(0, 1), (1, 0), (1, 2), (2, 1)],
+    )
+    empty_set = set(empties)
+    for group in ranked:
+        opts = [p for p in group if p in empty_set]
+        if opts:
+            return random.choice(opts)
+    return None
+
+
 def get_ai_move(state: dict, difficulty: str) -> dict | None:
-    # wraps minimax_ttt - returns row/col + new state
-    # easy = random empty cell so beginners can actually win
     board = state["board"]
     current = state["currentPlayer"]
     if difficulty == "easy":
-        empties = [(r, c) for r in range(3) for c in range(3) if board[r][c] == EMPTY]
-        move = random.choice(empties) if empties else None
+        move = _random_legal(board)
+    elif difficulty == "medium":
+        move = _medium_move(board, current)
     else:
-        depth = DIFFICULTY_DEPTHS.get(difficulty, 9)
+        depth = DEPTHS.get(difficulty, DEPTHS["hard"])
         move = minimax_ttt.best_move(board, current, depth)
     if move is None:
         return None

@@ -156,13 +156,13 @@ def c4_get_children(state: dict[str, Any]) -> list[int]:
     return c4_legal_cols(state)
 
 
-# how deep minimax looks - higher = stronger + slower
-DEPTHS = {"easy": 2, "medium": 4, "hard": 6, "expert": 8}
+# hard/expert only
+DEPTHS = {"hard": 4, "expert": 6}
 
 
 def _engine(state: dict[str, Any], difficulty: str) -> MinimaxEngine:
     # wire connect4 into the shared MinimaxEngine
-    depth = DEPTHS.get(difficulty, 4)
+    depth = DEPTHS.get(difficulty, DEPTHS["hard"])
 
     def apply(s: dict[str, Any], col: int) -> dict[str, Any]:
         return c4_drop(s, col)
@@ -180,33 +180,64 @@ def _engine(state: dict[str, Any], difficulty: str) -> MinimaxEngine:
     )
 
 
+def _col_wins(state: dict[str, Any], col: int, piece: str) -> bool:
+    trial = {**state, "currentPlayer": piece}
+    try:
+        nxt = c4_drop(trial, col)
+    except ValueError:
+        return False
+    return nxt.get("winner") == piece
+
+
+def _medium_col(state: dict[str, Any]) -> int | None:
+    # one look: win, else block, else centre columns
+    cols = c4_legal_cols(state)
+    if not cols:
+        return None
+    me = state["currentPlayer"]
+    opp = HUMAN_PIECE if me == AI_PIECE else AI_PIECE
+    wins = [c for c in cols if _col_wins(state, c, me)]
+    if wins:
+        return random.choice(wins)
+    blocks = [c for c in cols if _col_wins(state, c, opp)]
+    if blocks:
+        return random.choice(blocks)
+    legal = set(cols)
+    for rank in ([3], [2, 4], [1, 5], [0, 6]):
+        opts = [c for c in rank if c in legal]
+        if opts:
+            return random.choice(opts)
+    return cols[0]
+
+
+def _pick_col(state: dict[str, Any], difficulty: str) -> int | None:
+    cols = c4_legal_cols(state)
+    if not cols:
+        return None
+    if difficulty == "easy":
+        return random.choice(cols)
+    if difficulty == "medium":
+        return _medium_col(state)
+    eng = _engine(state, difficulty)
+    best = eng.best_action(state)
+    return best if best is not None else cols[0]
+
+
 def c4_ai_move(state: dict[str, Any], difficulty: str) -> dict[str, Any] | None:
     # only answer when it's yellow's turn and the game isn't over
     if state.get("gameOver"):
         return None
     if state["currentPlayer"] != AI_PIECE:
         return None
-    cols = c4_legal_cols(state)
-    if not cols:
+    col = _pick_col(state, difficulty)
+    if col is None:
         return None
-    # easy = random legal col (same idea as ttt)
-    if difficulty == "easy":
-        return c4_drop(state, random.choice(cols))
-    eng = _engine(state, difficulty)
-    best = eng.best_action(state)
-    # fallback: first legal col if search somehow returns nothing
-    if best is None:
-        return c4_drop(state, cols[0])
-    return c4_drop(state, best)
+    return c4_drop(state, col)
 
 
 def c4_hint(state: dict[str, Any], difficulty: str) -> int | None:
-    # same search as ai but for whoever's turn (red or yellow)
+    # same picker as ai, for whoever's turn
     if state.get("gameOver"):
         return None
-    cols = c4_legal_cols(state)
-    if not cols:
-        return None
-    eng = _engine(state, difficulty)
-    return eng.best_action(state)
+    return _pick_col(state, difficulty)
 

@@ -9,7 +9,7 @@ const defaultStats: Stats = { wins: 0, losses: 0, draws: 0, gamesPlayed: 0 };
 
 function storageKey(gameKey: GameStatsKey) {
   // separate key per game so chess doesn't wipe checkers
-  return `cyber-arcade-stats-${gameKey}`;
+  return `arcade-stats-${gameKey}`;
 }
 
 function load(gameKey: GameStatsKey): Stats {

@@ -66,7 +66,7 @@ export function ControlPanel({
           <div className="space-y-2">
             <p className="font-vt text-lg tracking-widest text-muted inline-flex items-center leading-none">
               MODE
-              <ArcadeTip text="VS AI hits the backend minimax. LOCAL is pass-and-play on the same keyboard" />
+              <ArcadeTip text="VS AI uses the difficulty you pick. easy/medium are not minimax. LOCAL is pass-and-play on the same keyboard" />
             </p>
             <div className="flex gap-2">
               {/* ai = vs computer, local = pass-and-play same keyboard */}

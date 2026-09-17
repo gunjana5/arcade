@@ -1,11 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { CoinSlot } from "@/components/CoinInsert";
 
-// skin class = colour in globals.css (.game-card-retro.tic etc)
+// skin class = colour in globals.css (.game-card.tic etc)
 const META: Record<
   string,
   { title: string; blurb: string; skin: string; icon: string }
@@ -50,16 +49,8 @@ export function GameCard({
   };
 
   return (
-    // parent grid owns staggerChildren - these variants just do the per-card pop
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 28 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      transition={{ type: "spring", stiffness: 280, damping: 20 }}
-      className="h-full"
-    >
-      <div className={`game-card-retro ${meta.skin} !cursor-default`}>
+    <div className="h-full">
+      <div className={`game-card ${meta.skin} !cursor-default`}>
         {/* title link = shortcut; primary path is the coin slot below */}
         <Link
           href={`/games/${game.id}`}
@@ -78,6 +69,6 @@ export function GameCard({
         </Link>
         <CoinSlot gameId={game.id} label={meta.title} />
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,8 +1,8 @@
+// tailwind.config.ts - retro arcade palette + pixel fonts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    // scan these so unused neon classes aren't purged
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,12 +13,8 @@ const config: Config = {
         press: ["var(--font-press)", "cursive"],
         bubble: ["var(--font-bubble)", "cursive"],
         vt: ["var(--font-vt)", "monospace"],
-        // keep old names pointing at pixel fonts so leftover classes still look right
-        orbitron: ["var(--font-press)", "cursive"],
-        inter: ["var(--font-vt)", "monospace"],
       },
       colors: {
-        // map utility names -> css custom props (single source in globals.css)
         "bg-void": "var(--bg-void)",
         "bg-surface": "var(--bg-surface)",
         "bg-elevated": "var(--bg-elevated)",
@@ -54,7 +50,6 @@ const config: Config = {
         "glow-yellow": "var(--glow-yellow)",
       },
       animation: {
-        // float = coin bob on home, flicker = title glitch
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         flicker: "flicker 4s linear infinite",
@@ -67,10 +62,6 @@ const config: Config = {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
-        },
-        flicker: {
-          "0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%": { opacity: "1" },
-          "20%, 24%, 55%": { opacity: "0.82" },
         },
       },
     },

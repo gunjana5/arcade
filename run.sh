@@ -31,6 +31,6 @@ elif command -v xdg-open >/dev/null 2>&1; then
 fi
 
 echo "Backend PID: $BACKEND_PID  Frontend PID: $FRONT_PID"
-echo "cyber arcade: http://localhost:3000"
+echo "arcade: http://localhost:3000"
 echo "Press Ctrl+C to stop both."
 wait $FRONT_PID $BACKEND_PID 2>/dev/null || true

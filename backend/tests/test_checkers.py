@@ -71,3 +71,24 @@ def test_king_can_jump_backwards():
     state = checkers_get_state(board, black_turn=True)
     moves = checkers_get_moves(state)
     assert [(4, 3), (2, 1)] in moves
+
+
+def test_man_cannot_jump_backwards():
+    # black man at (4,3); only capture is "up" over red at (3,2) -> (2,1)
+    board = _empty_board()
+    board[4][3] = BLACK
+    board[3][2] = RED
+    state = checkers_get_state(board, black_turn=True)
+    moves = checkers_get_moves(state)
+    assert [(4, 3), (2, 1)] not in moves
+    # no other jumps either - quiet forward steps only
+    assert all(abs(m[1][0] - m[0][0]) == 1 for m in moves)
+
+
+def test_king_can_jump_backwards():
+    board = _empty_board()
+    board[4][3] = KING_BLACK
+    board[3][2] = RED
+    state = checkers_get_state(board, black_turn=True)
+    moves = checkers_get_moves(state)
+    assert [(4, 3), (2, 1)] in moves

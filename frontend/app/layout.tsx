@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Pixelify_Sans, Press_Start_2P, VT323 } from "next/font/google";
-import { ArcadeWelcome } from "@/components/ArcadeWelcome";
 import "./globals.css";
 
-// press = titles / WELCOME, bubble = PLAY chips, vt = body
+// press = titles, bubble = PLAY chips, vt = body
 const pressStart = Press_Start_2P({
   subsets: ["latin"],
   variable: "--font-press",
@@ -23,8 +22,8 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "cyber arcade",
-  description: "retro neon browser games - tic tac toe, connect 4, checkers, chess",
+  title: "arcade",
+  description: "tic tac toe, connect 4, checkers, chess. vs ai or same keyboard.",
 };
 
 export default function RootLayout({
@@ -36,7 +35,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pressStart.variable} ${pixelify.variable} ${vt323.variable}`}>
       <body className="min-h-screen bg-bg-void font-vt text-fg antialiased">
-        <ArcadeWelcome />
         {children}
       </body>
     </html>

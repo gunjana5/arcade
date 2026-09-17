@@ -1,6 +1,6 @@
 # shared minimax + alpha-beta
 # each game passes in: legal moves, apply move, game over?, score board, whose turn
-# difficulty = max_depth (per-game DEPTHS / DIFFICULTY_DEPTHS)
+# hard/expert pass a depth; easy/medium never call this
 from typing import Callable, TypeVar
 
 StateT = TypeVar("StateT")
